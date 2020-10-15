@@ -3,6 +3,7 @@ import * as admin from 'firebase-admin'
 
 admin.initializeApp()
 
+// TODO: Prevent tasks with same name to be created
 export const addTask = functions.https.onRequest(async (req, res) => {
   const {
     name,
