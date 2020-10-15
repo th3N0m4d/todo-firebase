@@ -4,7 +4,6 @@ A simple, and yet modern, TODO app written in Javascript and Firebase. This proj
 
 ## Features
 
-
 - Type-checking with Typescript
 - Code linting with ESLint
 - API description with Swagger
