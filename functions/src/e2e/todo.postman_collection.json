@@ -1,0 +1,50 @@
+{
+	"info": {
+		"_postman_id": "3031f99c-d3a5-4f5d-aec2-0f797c3228a0",
+		"name": "todo",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "{{baseUrl}}/addTask",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fc79c9ad-4584-485f-9067-935b991c4a8b",
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Clean apartment\",\n    \"dueDate\": \"2021-01-11T23:00:00.000Z\",\n    \"completed\": false\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/addTask",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"addTask"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
