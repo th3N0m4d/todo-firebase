@@ -1,8 +1,6 @@
 import httpMocks from 'node-mocks-http';
 import {addTask} from '../src/index';
 
-const test = require('firebase-functions-test')();
-
 jest.mock('firebase-admin', () => ({
   initializeApp: jest.fn(),
   firestore: jest.fn().mockImplementation(()=> ({
@@ -13,10 +11,6 @@ jest.mock('firebase-admin', () => ({
 }));
 
 describe('addTask', () => {
-  afterAll(()=> {
-    test.cleanup();
-  });
-
   it('should add new task to collection', async () => {
     const mockTask = {
       name: 'Read books',
