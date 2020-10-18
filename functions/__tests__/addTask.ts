@@ -1,5 +1,5 @@
 import httpMocks from 'node-mocks-http';
-import {addTask} from '../index';
+import {addTask} from '../src/index';
 
 const test = require('firebase-functions-test')();
 

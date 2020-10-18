@@ -1,5 +1,5 @@
 import httpMocks from 'node-mocks-http';
-import {helloWorld} from '../index';
+import {helloWorld} from '../src/index';
 
 describe('helloWorld', () => {
   it('should get a greeting from API', async () => {
