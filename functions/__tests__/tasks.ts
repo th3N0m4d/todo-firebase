@@ -18,7 +18,6 @@ const deleteSpy = jest.fn();
 const setSpy = jest.fn();
 const getSpy = jest.fn();
 
-// TODO: Move this file to __mocks__
 jest.mock('firebase-admin', () => ({
   initializeApp: jest.fn(),
   firestore: jest.fn().mockImplementation(()=> ({
