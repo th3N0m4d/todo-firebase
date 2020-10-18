@@ -54,7 +54,6 @@ Note: Initially, the CLI will associate your project directory with a Firebase p
 The CLI generates a default function we can use to test our project. 
 Head on to functions/src/index.ts, uncomment the commented code and run the following commands:
 ```bash
-$ npm run build
 $ npm run serve
 $ curl http://localhost:5001/YOUR-PROJECT-ID/us-central1/helloWorld
 ```
