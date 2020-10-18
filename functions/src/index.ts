@@ -72,8 +72,6 @@ export const updateTask = functions.https.onRequest(async (req, res) => {
 export const getTaskById = functions.https.onRequest(async (req, res) => {
   const taskId = <string>req.query.taskId || '';
 
-  console.log(taskId);
-
   try {
     const task = await db.collection(COLLECTION_PATH).
         doc(taskId).

@@ -5,16 +5,13 @@ import {
   removeTask,
   updateTask,
 } from '../src/index';
-
-const EMPTY = undefined;
-const TASK_ID = 'XYZ';
-const ERROR_MESSAGE = 'Something went wrong';
-const ERROR = new Error(ERROR_MESSAGE);
-const mockTask = {
-  name: 'Read books',
-  completed: false,
-  dueDate: '2021-01-11T23:00:00.000Z',
-};
+import {
+  EMPTY,
+  TASK_ID,
+  ERROR_MESSAGE,
+  ERROR,
+  mockTask,
+} from '../utils/tests';
 
 const addSpy = jest.fn();
 const deleteSpy = jest.fn();
