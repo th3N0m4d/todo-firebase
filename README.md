@@ -1,4 +1,4 @@
-# TODO with Firebase
+# TODO APP with Firebase
 
 You will find in this repo a simple TODO application written in Typescript using Cloud Functions and Firestore.
 
