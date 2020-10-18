@@ -28,11 +28,11 @@ describe('addTask', () => {
     });
     const res = httpMocks.createResponse();
 
-    res.send = jest.fn().mockImplementation((response)=> {
-      expect(res.statusCode).toBe(201);
-      expect(response).toBe('XYZ');
-    });
+    res.send = jest.fn();
 
     await addTask(req, res);
+
+    expect(res.statusCode).toBe(201);
+    expect(res.send).toBeCalledWith('XYZ');
   });
 });

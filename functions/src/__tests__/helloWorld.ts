@@ -6,11 +6,11 @@ describe('helloWorld', () => {
     const req = httpMocks.createRequest();
     const res = httpMocks.createResponse();
 
-    res.send = jest.fn().mockImplementation((response)=> {
-      expect(res.statusCode).toBe(200);
-      expect(response).toBe('Hello from Firebase!');
-    });
+    res.send = jest.fn();
 
     await helloWorld(req, res);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.send).toHaveBeenCalledWith('Hello from Firebase!');
   });
 });
