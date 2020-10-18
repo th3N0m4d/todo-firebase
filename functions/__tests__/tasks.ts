@@ -8,83 +8,151 @@ import {
 
 const EMPTY = undefined;
 const TASK_ID = 'XYZ';
+const ERROR_MESSAGE = 'Something went wrong';
+const ERROR = new Error(ERROR_MESSAGE);
 const mockTask = {
   name: 'Read books',
   completed: false,
   dueDate: '2021-01-11T23:00:00.000Z',
 };
 
+const addSpy = jest.fn();
+const deleteSpy = jest.fn();
+const setSpy = jest.fn();
+const getSpy = jest.fn();
+
 // TODO: Move this file to __mocks__
 jest.mock('firebase-admin', () => ({
   initializeApp: jest.fn(),
   firestore: jest.fn().mockImplementation(()=> ({
     collection: jest.fn().mockImplementation(()=> ({
-      add: jest.fn().mockResolvedValue({id: TASK_ID}),
+      add: addSpy,
       doc: jest.fn().mockImplementation(()=> ({
-        delete: jest.fn().mockResolvedValue(EMPTY),
-        set: jest.fn().mockResolvedValue(EMPTY),
-        get: jest.fn().mockResolvedValue(mockTask),
+        delete: deleteSpy,
+        set: setSpy,
+        get: getSpy,
       })),
     })),
   })),
 }));
 
 describe('tasks', () => {
-  it('should add new task to collection', async () => {
-    const req = httpMocks.createRequest({
-      body: mockTask,
+  describe('createTask', () => {
+    it('should add new task to collection', async () => {
+      addSpy.mockResolvedValue({id: TASK_ID});
+      const req = httpMocks.createRequest({
+        body: mockTask,
+      });
+      const res = httpMocks.createResponse();
+
+      res.send = jest.fn();
+
+      await createTask(req, res);
+
+      expect(res.statusCode).toBe(201);
+      expect(res.send).toBeCalledWith(TASK_ID);
     });
-    const res = httpMocks.createResponse();
 
-    res.send = jest.fn();
+    it('should return 500 status code when trying to add a new task',
+        async () => {
+          addSpy.mockRejectedValue(ERROR);
+          const req = httpMocks.createRequest({
+            body: mockTask,
+          });
+          const res = httpMocks.createResponse();
 
-    await createTask(req, res);
+          res.send = jest.fn();
 
-    expect(res.statusCode).toBe(201);
-    expect(res.send).toBeCalledWith(TASK_ID);
+          await createTask(req, res);
+
+          expect(res.statusCode).toBe(500);
+          expect(res.send).toBeCalledWith(ERROR_MESSAGE);
+        });
   });
 
-  it('should delete existing task from collection', async () => {
-    const taskId = TASK_ID;
+  describe('deleteTask', () => {
+    it('should delete existing task from collection', async () => {
+      deleteSpy.mockResolvedValue(EMPTY);
+      const taskId = TASK_ID;
 
-    const req = httpMocks.createRequest({
-      body: {taskId},
+      const req = httpMocks.createRequest({
+        body: {taskId},
+      });
+      const res = httpMocks.createResponse();
+
+      res.send = jest.fn();
+
+      await removeTask(req, res);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.send).toBeCalledWith(`Task ${taskId} successfully deleted`);
     });
-    const res = httpMocks.createResponse();
 
-    res.send = jest.fn();
+    it('should return 500 status code when operation fails', async () => {
+      deleteSpy.mockRejectedValue(ERROR);
+      const taskId = TASK_ID;
 
-    await removeTask(req, res);
+      const req = httpMocks.createRequest({
+        body: {taskId},
+      });
+      const res = httpMocks.createResponse();
 
-    expect(res.statusCode).toBe(200);
-    expect(res.send).toBeCalledWith(`Task ${taskId} successfully deleted`);
+      res.send = jest.fn();
+
+      await removeTask(req, res);
+
+      expect(res.statusCode).toBe(500);
+      expect(res.send).toBeCalledWith(ERROR_MESSAGE);
+    });
   });
 
-  it('should update existing task', async () => {
-    const req = httpMocks.createRequest({
-      body: mockTask,
+  describe('updateTask', () => {
+    it('should update existing task', async () => {
+      const req = httpMocks.createRequest({
+        body: mockTask,
+      });
+      const res = httpMocks.createResponse();
+
+      res.send = jest.fn();
+
+      await updateTask(req, res);
+
+      expect(res.statusCode).toBe(204);
+      expect(res.send).toHaveBeenCalled();
     });
-    const res = httpMocks.createResponse();
-
-    res.send = jest.fn();
-
-    await updateTask(req, res);
-
-    expect(res.statusCode).toBe(204);
-    expect(res.send).toHaveBeenCalled();
   });
 
-  it('should get task by id', async () => {
-    const req = httpMocks.createRequest({
-      url: `getTaskById&taskId=${TASK_ID}`,
+  describe('getTaskById', () => {
+    it('should get task by id', async () => {
+      getSpy.mockResolvedValue(mockTask);
+      const req = httpMocks.createRequest({
+        url: `getTaskById&taskId=${TASK_ID}`,
+      });
+      const res = httpMocks.createResponse();
+
+      res.send = jest.fn();
+
+      await getTaskById(req, res);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.send).toHaveBeenCalledWith(mockTask);
     });
-    const res = httpMocks.createResponse();
 
-    res.send = jest.fn();
+    it('should return 500 status code when operation fails', async () => {
+      getSpy.mockRejectedValue(ERROR);
+      const taskId = TASK_ID;
 
-    await getTaskById(req, res);
+      const req = httpMocks.createRequest({
+        body: {taskId},
+      });
+      const res = httpMocks.createResponse();
 
-    expect(res.statusCode).toBe(200);
-    expect(res.send).toHaveBeenCalledWith(mockTask);
+      res.send = jest.fn();
+
+      await getTaskById(req, res);
+
+      expect(res.statusCode).toBe(500);
+      expect(res.send).toBeCalledWith(ERROR_MESSAGE);
+    });
   });
 });
