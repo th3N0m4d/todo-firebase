@@ -23,7 +23,7 @@ export const createTask = functions.https.onRequest(async (req, res) => {
 
     res.status(201).send(result.id);
   } catch (error) {
-    console.log(error);
+    functions.logger.error(error);
     res.status(500).send(error.message);
   }
 });
@@ -40,7 +40,7 @@ export const removeTask = functions.https.onRequest(async (req, res) => {
 
     res.send(`Task ${taskId} successfully deleted`);
   } catch (error) {
-    console.log(error);
+    functions.logger.error(error);
     res.status(500).send(error.message);
   }
 });
@@ -64,7 +64,7 @@ export const updateTask = functions.https.onRequest(async (req, res) => {
 
     res.status(204).send();
   } catch (error) {
-    console.log(error);
+    functions.logger.error(error);
     res.status(500).send(error.message);
   }
 });
@@ -81,6 +81,7 @@ export const getTaskById = functions.https.onRequest(async (req, res) => {
 
     res.status(200).send(task);
   } catch (error) {
+    functions.logger.error(error);
     res.status(500).send(error.message);
   }
 });
