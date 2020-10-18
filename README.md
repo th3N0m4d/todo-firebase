@@ -1,14 +1,15 @@
 # TODO with Firebase
 
-A simple, and yet modern, TODO app written in Javascript and Firebase. This project also includes a tutorial with step-by-step instructions on how to: setup Firebase, create Firebase Functions and test it with Jest / Emulators.
+You will find in this repo a simple TODO application written in Typescript using Cloud Functions and Firestore.
 
-## Features
+The project includes the following features:
 
-- Type-checking with Typescript
-- Code linting with ESLint
-- API description with Swagger
+- How to setup and initialize a Firebase project
+- Working with Cloud Functions
 - Data persistence with Firestore
 - Unit tests with Jest
+- E2E tests with Postman
+- API description with Swagger
 
 ## Project Requirements
 
@@ -16,36 +17,11 @@ A simple, and yet modern, TODO app written in Javascript and Firebase. This proj
 - Node: >= 10
 - Java: ?
 
-## Installation
-
-
-```bash
-npm install -g firebase-tools
-```
-
-Note: If you get `EACCES`
-```bash
-sudo chown -R `whoami` ~/.npm
-sudo chown -R `whoami` /usr/local/lib/node_modules
-```
-
 ## Usage
 
+In the root directory there's going to be a file called TUTORIAL.md. 
 
-```bash
-firebase login
-```
-
-## Testing
-
-
-```bash
-npm run test
-```
-
-```bash
-npm run test:watch
-```
+Open this file and follow the instructions described there.
 
 ## Contributing
 
