@@ -120,6 +120,21 @@ describe('tasks', () => {
       expect(res.statusCode).toBe(204);
       expect(res.send).toHaveBeenCalled();
     });
+
+    it('should return 500 status code when operation fails', async () => {
+      setSpy.mockRejectedValue(ERROR);
+      const req = httpMocks.createRequest({
+        body: mockTask,
+      });
+      const res = httpMocks.createResponse();
+
+      res.send = jest.fn();
+
+      await updateTask(req, res);
+
+      expect(res.statusCode).toBe(500);
+      expect(res.send).toHaveBeenCalledWith(ERROR_MESSAGE);
+    });
   });
 
   describe('getTaskById', () => {
