@@ -3,8 +3,8 @@ import * as admin from 'firebase-admin';
 
 admin.initializeApp();
 
-const db = admin.firestore();
 const COLLECTION_PATH = 'task';
+const taskRef = admin.firestore().collection(COLLECTION_PATH);
 
 export const createTask = functions.https.onRequest(async (req, res) => {
   const {
@@ -14,12 +14,7 @@ export const createTask = functions.https.onRequest(async (req, res) => {
   } = req.body;
 
   try {
-    const result = await db.collection(COLLECTION_PATH).
-        add({
-          name,
-          completed,
-          dueDate,
-        });
+    const result = await taskRef.add({name, completed, dueDate});
 
     res.status(201).send(result.id);
   } catch (error) {
@@ -34,9 +29,7 @@ export const removeTask = functions.https.onRequest(async (req, res) => {
   } = req.body;
 
   try {
-    await db.collection(COLLECTION_PATH).
-        doc(taskId).
-        delete();
+    await taskRef.doc(taskId).delete();
 
     res.send(`Task ${taskId} successfully deleted`);
   } catch (error) {
@@ -54,7 +47,7 @@ export const updateTask = functions.https.onRequest(async (req, res) => {
   } = req.body;
 
   try {
-    await db.collection(COLLECTION_PATH).
+    await taskRef.
         doc(id).
         set({
           name,
@@ -73,9 +66,7 @@ export const getTaskById = functions.https.onRequest(async (req, res) => {
   const taskId = <string>req.query.taskId || '';
 
   try {
-    const task = await db.collection(COLLECTION_PATH).
-        doc(taskId).
-        get();
+    const task = await taskRef.doc(taskId).get();
 
     res.status(200).send(task);
   } catch (error) {
