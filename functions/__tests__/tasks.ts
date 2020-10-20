@@ -22,7 +22,7 @@ jest.mock('firebase-admin', () => ({
   initializeApp: jest.fn(),
   firestore: jest.fn().mockImplementation(()=> ({
     collection: jest.fn().mockImplementation(()=> ({
-      add: addSpy,
+      add: jest.fn().mockImplementation(()=> addSpy()),
       doc: jest.fn().mockImplementation(()=> ({
         delete: deleteSpy,
         set: setSpy,
