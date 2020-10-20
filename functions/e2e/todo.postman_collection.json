@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "{{baseUrl}}/addTask",
+			"name": "addTask",
 			"event": [
 				{
 					"listen": "test",
@@ -40,6 +40,98 @@
 					],
 					"path": [
 						"addTask"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "removeTask",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"taskId\": \"8kiQDFOOu5ErLELsnsSo\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/removeTask",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"removeTask"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getTaskById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/getTaskById?taskId=PTrpmKKh3Q4c2JsaJrIQ",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"getTaskById"
+					],
+					"query": [
+						{
+							"key": "taskId",
+							"value": "PTrpmKKh3Q4c2JsaJrIQ"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getTasks",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/getTasks",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"getTasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "signUpUser",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"john.doe@email.com\",\n    \"password\": \"123456\",\n    \"displayName\": \"Johnny D\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/signUpUser",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"signUpUser"
 					]
 				}
 			},
