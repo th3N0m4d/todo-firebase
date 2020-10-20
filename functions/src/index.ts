@@ -6,6 +6,27 @@ admin.initializeApp();
 const COLLECTION_PATH = 'task';
 const taskRef = admin.firestore().collection(COLLECTION_PATH);
 
+export const signUpUser = functions.https.onRequest(async (req, res) => {
+  const {
+    email,
+    password,
+    displayName,
+  } = req.body;
+
+  try {
+    const userSnapshot = await admin.auth().createUser({
+      email,
+      password,
+      displayName,
+    });
+
+    res.status(201).send(userSnapshot.uid);
+  } catch (error) {
+    functions.logger.error(error);
+    res.status(500).send(error.message);
+  }
+});
+
 export const createTask = functions.https.onRequest(async (req, res) => {
   const {
     name,
