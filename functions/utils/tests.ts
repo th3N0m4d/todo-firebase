@@ -6,4 +6,5 @@ export const mockTask = {
   name: 'Read books',
   completed: false,
   dueDate: '2021-01-11T23:00:00.000Z',
+  uuid: TASK_ID,
 };

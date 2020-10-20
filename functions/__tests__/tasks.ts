@@ -2,6 +2,7 @@ import httpMocks from 'node-mocks-http';
 import {
   createTask,
   getTaskById,
+  getTasks,
   removeTask,
   updateTask,
 } from '../src/index';
@@ -23,6 +24,7 @@ jest.mock('firebase-admin', () => ({
   firestore: jest.fn().mockImplementation(()=> ({
     collection: jest.fn().mockImplementation(()=> ({
       add: jest.fn().mockImplementation(()=> addSpy()),
+      get: jest.fn().mockImplementation(()=> getSpy()),
       doc: jest.fn().mockImplementation(()=> ({
         delete: deleteSpy,
         set: setSpy,
@@ -161,6 +163,40 @@ describe('tasks', () => {
       res.send = jest.fn();
 
       await getTaskById(req, res);
+
+      expect(res.statusCode).toBe(500);
+      expect(res.send).toBeCalledWith(ERROR_MESSAGE);
+    });
+  });
+
+  describe('getTasks', () => {
+    it('should return tasks', async () => {
+      const taskSnapshot = [{
+        id: TASK_ID,
+        data: jest.fn(()=> mockTask),
+      }];
+      const response = [mockTask];
+      const req = httpMocks.createRequest();
+      const res = httpMocks.createResponse();
+
+      getSpy.mockResolvedValue(taskSnapshot);
+      res.send = jest.fn();
+
+      await getTasks(req, res);
+
+      expect(res.statusCode).toBe(200);
+      expect(res.send).toHaveBeenCalledWith(response);
+    });
+
+    it('should return 500 status code when operation fails', async () => {
+      getSpy.mockRejectedValue(ERROR);
+
+      const req = httpMocks.createRequest();
+      const res = httpMocks.createResponse();
+
+      res.send = jest.fn();
+
+      await getTasks(req, res);
 
       expect(res.statusCode).toBe(500);
       expect(res.send).toBeCalledWith(ERROR_MESSAGE);

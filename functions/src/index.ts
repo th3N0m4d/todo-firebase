@@ -74,3 +74,20 @@ export const getTaskById = functions.https.onRequest(async (req, res) => {
     res.status(500).send(error.message);
   }
 });
+
+export const getTasks = functions.https.onRequest(async (req, res) => {
+  try {
+    const taskSnapshot = await taskRef.get();
+    const result: any[] = [];
+
+    taskSnapshot.forEach((doc) => result.push({
+      uuid: doc.id,
+      ...doc.data(),
+    }));
+
+    res.status(200).send(result);
+  } catch (error) {
+    functions.logger.error(error);
+    res.status(500).send(error.message);
+  }
+});
