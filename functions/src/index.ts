@@ -89,6 +89,11 @@ export const getTaskById = functions.https.onRequest(async (req, res) => {
   try {
     const task = await taskRef.doc(taskId).get();
 
+    if (!task) {
+      res.status(404).send(`Task ${taskId} not found`);
+      return;
+    }
+
     res.status(200).send(task);
   } catch (error) {
     functions.logger.error(error);

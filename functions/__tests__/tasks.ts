@@ -151,6 +151,23 @@ describe('tasks', () => {
       expect(res.send).toHaveBeenCalledWith(mockTask);
     });
 
+    it('should return 404 when task is not found', async () => {
+      getSpy.mockResolvedValue(null);
+      const req = httpMocks.createRequest({
+        query: {
+          taskId: TASK_ID,
+        },
+      });
+      const res = httpMocks.createResponse();
+
+      res.send = jest.fn();
+
+      await getTaskById(req, res);
+
+      expect(res.statusCode).toBe(404);
+      expect(res.send).toHaveBeenCalledWith(`Task ${TASK_ID} not found`);
+    });
+
     it('should return 500 status code when operation fails', async () => {
       getSpy.mockRejectedValue(ERROR);
       const taskId = TASK_ID;
