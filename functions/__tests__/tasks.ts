@@ -74,7 +74,9 @@ describe('tasks', () => {
       const taskId = TASK_ID;
 
       const req = httpMocks.createRequest({
-        body: {taskId},
+        params: {
+          '0': taskId,
+        },
       });
       const res = httpMocks.createResponse();
 

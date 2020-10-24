@@ -45,9 +45,7 @@ export const createTask = functions.https.onRequest(async (req, res) => {
 });
 
 export const removeTask = functions.https.onRequest(async (req, res) => {
-  const {
-    taskId,
-  } = req.body;
+  const taskId = req.params[0];
 
   try {
     await taskRef.doc(taskId).delete();
@@ -61,15 +59,16 @@ export const removeTask = functions.https.onRequest(async (req, res) => {
 
 export const updateTask = functions.https.onRequest(async (req, res) => {
   const {
-    id,
     name,
     completed,
     dueDate,
   } = req.body;
 
+  const taskId = req.params[0];
+
   try {
     await taskRef.
-        doc(id).
+        doc(taskId).
         set({
           name,
           completed,
@@ -94,7 +93,7 @@ export const getTaskById = functions.https.onRequest(async (req, res) => {
       return;
     }
 
-    res.status(200).send(task);
+    res.send(task);
   } catch (error) {
     functions.logger.error(error);
     res.status(500).send(error.message);
@@ -111,7 +110,7 @@ export const getTasks = functions.https.onRequest(async (req, res) => {
       ...doc.data(),
     }));
 
-    res.status(200).send(result);
+    res.send(result);
   } catch (error) {
     functions.logger.error(error);
     res.status(500).send(error.message);
