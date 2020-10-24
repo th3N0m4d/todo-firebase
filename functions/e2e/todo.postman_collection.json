@@ -6,16 +6,29 @@
 	},
 	"item": [
 		{
-			"name": "addTask",
+			"name": "createTask",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"id": "fc79c9ad-4584-485f-9067-935b991c4a8b",
 						"exec": [
-							"pm.test(\"Status code is 201\", function () {",
+							"pm.test(\"Status code is 201\", function (err, response) {",
+							"    // Save taskId for next requests",
+							"    pm.environment.set(\"taskId\", pm.response.text());",
+							"",
 							"    pm.response.to.have.status(201);",
 							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "b58e8e9e-eb55-469a-b4dc-0fb45f78a33b",
+						"exec": [
+							"postman.setNextRequest(\"updateTask\");"
 						],
 						"type": "text/javascript"
 					}
@@ -34,12 +47,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/addTask",
+					"raw": "{{baseUrl}}/createTask",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"addTask"
+						"createTask"
 					]
 				}
 			},
@@ -47,6 +60,30 @@
 		},
 		{
 			"name": "removeTask",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "07ecd062-965f-4a7e-b18d-a530e17a535b",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e815159b-6908-45ca-9663-89513dfb1ba9",
+						"exec": [
+							"postman.setNextRequest(null)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "DELETE",
 				"header": [],
@@ -60,12 +97,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/removeTask",
+					"raw": "{{baseUrl}}/removeTask/{{taskId}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
-						"removeTask"
+						"removeTask",
+						"{{taskId}}"
 					]
 				}
 			},
@@ -73,11 +111,35 @@
 		},
 		{
 			"name": "getTaskById",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "cb8c6e80-dd40-46d8-8275-85a91f673b4d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "fbe093a7-aaf0-4010-a5f3-ec9ac74d0bd2",
+						"exec": [
+							"postman.setNextRequest(\"getTasks\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{baseUrl}}/getTaskById?taskId=PTrpmKKh3Q4c2JsaJrIQ",
+					"raw": "{{baseUrl}}/getTaskById?taskId={{taskId}}",
 					"host": [
 						"{{baseUrl}}"
 					],
@@ -87,7 +149,7 @@
 					"query": [
 						{
 							"key": "taskId",
-							"value": "PTrpmKKh3Q4c2JsaJrIQ"
+							"value": "{{taskId}}"
 						}
 					]
 				}
@@ -96,6 +158,30 @@
 		},
 		{
 			"name": "getTasks",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3079e397-5538-4cc2-9263-f4237ec12151",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "11e60018-dd92-4012-a0be-ac0f123ab6b1",
+						"exec": [
+							"postman.setNextRequest(\"removeTask\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -132,6 +218,57 @@
 					],
 					"path": [
 						"signUpUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateTask",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d94a0f8c-e6e2-44cd-ab02-6caefa92c447",
+						"exec": [
+							"postman.setNextRequest(\"getTaskById\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "728fac1d-bbc0-409f-84e0-d24b593d4f88",
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {",
+							"    pm.response.to.have.status(204);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Clean apartment\",\n    \"dueDate\": \"2021-01-11T23:00:00.000Z\",\n    \"completed\": true\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/updateTask/{{taskId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"updateTask",
+						"{{taskId}}"
 					]
 				}
 			},
