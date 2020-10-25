@@ -3,7 +3,7 @@
   "scripts": {
     "lint": "eslint \"src/**/*\"",
     "build": "tsc -p tsconfig-build.json",
-    "serve": "npm run build && firebase emulators:start --only functions && exit 0",
+    "serve": "npm run build && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
@@ -11,18 +11,15 @@
     "test": "jest --runInBand",
     "watch-test": "jest --watch --runInBand",
     "serve-emulators": "wait-on npm run serve",
-    "e2e": "newman run e2e/todo.postman_collection.json -e e2e/Local.postman_environment.json",
-    "e2e-serve": "concurrently npm:serve-emulators npm:e2e"
+    "e2e": "newman run e2e/todo.postman_collection.json -e e2e/Local.postman_environment.json"
   },
   "engines": {
     "node": "10"
   },
   "main": "lib/src/index.js",
   "dependencies": {
-    "concurrently": "^5.3.0",
     "firebase-admin": "^8.10.0",
-    "firebase-functions": "^3.6.1",
-    "wait-on": "^5.2.0"
+    "firebase-functions": "^3.6.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.14",
