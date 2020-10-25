@@ -15,11 +15,11 @@ The project includes the following features:
 
 - OS: MacOs
 - Node: >= 10
-- Java: ?
+- Java: 8
 
 ## Usage
 
-In the root directory there's going to be a file called TUTORIAL.md. 
+In the root directory, there's going to be a few files prefixed with TUTORIAL.
 
 Open this file and follow the instructions described there.
 
